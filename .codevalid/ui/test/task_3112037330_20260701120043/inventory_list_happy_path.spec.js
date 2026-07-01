@@ -13,7 +13,7 @@ test("Inventory List Loads Correctly with Data and Low Stock Indicators", async 
 
   await recorder.step("Wait for inventory data to load");
   await expect(page.getByRole("heading", { name: "Inventory Items" })).toBeVisible();
-  await expect(page.getByText("Loading inventory data...")).not.toBeVisible();
+  await expect(page.getByText("Loading inventory data...")).not.toBeVisible({ timeout: 5000 });
 
   await recorder.step("Verify inventory table displays at least two rows");
   const table = page.locator("table.data-table");

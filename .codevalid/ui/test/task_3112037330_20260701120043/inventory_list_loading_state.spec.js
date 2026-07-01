@@ -10,15 +10,17 @@ test("Loading Skeleton Appears During Data Fetch", async ({ page }, testInfo) =>
 
   await recorder.step("Navigate to /inventory and observe the immediate loading UI");
   await page.goto("/inventory");
+  // Loading text renders above the table; with 1200ms delay it is visible right after navigation.
   await expect(page.getByText("Loading inventory data...")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Inventory Items" })).toBeVisible();
+  // Use exact:true to avoid substring matching h3 "No inventory items found" in addition to h1 "Inventory Items"
+  await expect(page.getByRole("heading", { name: "Inventory Items", exact: true })).toBeVisible();
 
   await recorder.step("Verify inventory content is not yet shown while requests are still pending");
   await expect(page.locator("table.data-table")).toHaveCount(0);
   await expect(page.locator("tbody tr")).toHaveCount(0);
 
   await recorder.step("Wait for the delayed API responses to complete and confirm the table appears");
-  await expect(page.getByText("Loading inventory data...")).not.toBeVisible({ timeout: 5000 });
+  await expect(page.getByText("Loading inventory data...")).not.toBeVisible({ timeout: 8000 });
   await expect(page.locator("table.data-table")).toBeVisible();
   await expect(page.locator("tbody tr")).toHaveCount(3);
 

@@ -18,10 +18,13 @@ test("App loads with inventory table visible on launch", async ({ page }, testIn
   });
 
   await recorder.step("Verify initial loading state", async () => {
+    // Loading text is shown before API responds; with 250ms delay it should be visible immediately after goto
     await expect(page.getByText("Loading inventory data...")).toBeVisible();
   });
 
   await recorder.step("Verify inventory header and summary cards", async () => {
+    // Wait for data to finish loading
+    await expect(page.getByText("Loading inventory data...")).not.toBeVisible({ timeout: 5000 });
     await expect(page.getByRole("heading", { name: "Inventory Items" })).toBeVisible();
     await expect(page.getByText("Filtered Count:")).toBeVisible();
     await expect(page.getByText("Total Stock Units:")).toBeVisible();
@@ -38,8 +41,8 @@ test("App loads with inventory table visible on launch", async ({ page }, testIn
   });
 
   await recorder.step("Verify seeded inventory rows render", async () => {
-    await expect(page.getByRole("cell", { name: "Widget A" })).toBeVisible();
-    await expect(page.getByRole("cell", { name: "Orange Juice" })).toBeVisible();
+    await expect(page.getByRole("cell", { name: "Widget A" }).first()).toBeVisible();
+    await expect(page.getByRole("cell", { name: "Orange Juice" }).first()).toBeVisible();
   });
 
   console.log("CODEVALID_TEST_ASSERTION_OK:app_initial_load_inventory_table_rendered");

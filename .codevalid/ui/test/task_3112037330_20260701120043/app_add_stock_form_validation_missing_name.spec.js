@@ -16,8 +16,9 @@ test("Add Stock form rejects submission with empty item name", async ({ page }, 
     await page.goto("/add-stock");
   });
 
-  await recorder.step("Switch to New Product mode", async () => {
-    await page.getByText("New Product").first().click();
+  // When no existing items, the form starts directly in new-product mode —
+  // the segmented control is hidden and #new-item-name is already visible.
+  await recorder.step("Confirm new-item name field is visible (no segmented control needed)", async () => {
     await expect(page.getByLabel("Item Name")).toBeVisible();
   });
 

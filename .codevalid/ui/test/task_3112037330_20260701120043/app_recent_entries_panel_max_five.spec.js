@@ -14,11 +14,12 @@ test("Recent entries panel shows no more than five stock additions per session",
 
   await recorder.step("Open Add Stock page", async () => {
     await page.goto("/add-stock");
+    // No existing items → form is directly in new-product mode
+    await expect(page.getByLabel("Item Name")).toBeVisible();
   });
 
   for (let index = 1; index <= 6; index += 1) {
     await recorder.step(`Submit stock entry ${index}`, async () => {
-      await page.getByText("New Product").first().click();
       await page.locator("#new-item-name").fill(`Entry ${index}`);
       await page.locator("#category-select").selectOption("Unknown");
       await page.locator("#quantity-input").fill(String(index));

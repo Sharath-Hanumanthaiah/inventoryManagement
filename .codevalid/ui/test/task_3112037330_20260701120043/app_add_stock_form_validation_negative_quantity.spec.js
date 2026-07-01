@@ -21,8 +21,10 @@ test("Add Stock form rejects submission with non-positive quantity", async ({ pa
     await page.goto("/add-stock");
   });
 
-  await recorder.step("Switch to New Product mode and enter invalid quantity", async () => {
-    await page.getByText("New Product").first().click();
+  // When no existing items the form is already in new-product mode —
+  // the segmented control is hidden and #new-item-name is directly visible.
+  await recorder.step("Enter invalid quantity in new-product mode", async () => {
+    await expect(page.getByLabel("Item Name")).toBeVisible();
     await page.locator("#new-item-name").fill("Widget B");
     await page.locator("#quantity-input").fill("-5");
     await page.locator("#expiry-date").fill("2024-12-31");

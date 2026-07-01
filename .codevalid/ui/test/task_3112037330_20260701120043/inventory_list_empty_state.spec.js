@@ -12,11 +12,13 @@ test("Empty State Displays When No Inventory Items Exist", async ({ page }, test
   await page.goto("/inventory");
 
   await recorder.step("Wait for data load to complete");
-  await expect(page.getByRole("heading", { name: "Inventory Items" })).toBeVisible();
-  await expect(page.getByText("Loading inventory data...")).not.toBeVisible();
+  // Use exact:true — without it, getByRole name does substring matching and the query
+  // "Inventory Items" would also match the h3 "No inventory items found" causing a strict-mode error.
+  await expect(page.getByRole("heading", { name: "Inventory Items", exact: true })).toBeVisible();
+  await expect(page.getByText("Loading inventory data...")).not.toBeVisible({ timeout: 5000 });
 
   await recorder.step("Verify empty state is shown and the inventory table is not rendered");
-  await expect(page.getByRole("heading", { name: "No inventory items found" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "No inventory items found", exact: true })).toBeVisible();
   await expect(page.getByText("Try resetting your filters or search terms, or add new stock to get started.")).toBeVisible();
   await expect(page.locator("table.data-table")).toHaveCount(0);
 
