@@ -592,7 +592,7 @@ def generate_place_order_pdf():
     pdf.table_row("Cost Paid", "order.price ($)")
     pdf.table_row("Ordered On", "order.orderDate")
     pdf.table_row("Arrival Date", "order.expectedArrival")
-    pdf.table_row("Status", "Delivered badge")
+    pdf.table_row("Status", "Recived badge")
     pdf.body("Empty state: 'No order history' when no delivered orders exist.")
 
     pdf.section("10. Auto-Population")

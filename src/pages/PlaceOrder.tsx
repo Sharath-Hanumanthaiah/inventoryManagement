@@ -456,7 +456,7 @@ export const PlaceOrder: React.FC = () => {
                     <td>{order.expectedArrival}</td>
                     <td>
                       <span className="badge badge-instock">
-                        Delivered
+                        Recived
                       </span>
                     </td>
                   </tr>
