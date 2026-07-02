@@ -26,7 +26,7 @@ test("Add Stock workflow accessible via application sidebar", async ({ page }, t
     await expect(page.getByRole("heading", { name: "Incoming Stock Form" })).toBeVisible();
     await expect(page.getByLabel("Category")).toBeVisible();
     await expect(page.getByLabel("Quantity Received")).toBeVisible();
-    await expect(page.getByText("Physical State")).toBeVisible();
+    await expect(page.getByText("Physical State", { exact: true })).toBeVisible();
     await expect(page.getByLabel("Expiry Date")).toBeVisible();
     await expect(page.getByLabel("Stock-In Date")).toBeVisible();
     await expect(page.getByRole("button", { name: "Add Stock to Inventory" })).toBeVisible();

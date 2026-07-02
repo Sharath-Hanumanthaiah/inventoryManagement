@@ -87,9 +87,11 @@ test("Low Stock Alerts Are Visible When Inventory Quantity Is 5 or Less", async 
     await expect(lowStockKpi.locator(".kpi-value")).toContainText("1");
 
     await recorder.recordStep("Confirm the low stock item is surfaced in a visually distinct warning area");
-    // The Dashboard renders low-stock items in a "Low Stock Warning" section with item name and quantity badge
-    await expect(page.getByText("Tomatoes")).toBeVisible();
-    await expect(page.getByText("5 left")).toBeVisible();
+    // The Dashboard renders low-stock items in a "Low Stock Warning" section with item name and quantity badge.
+    // Scope to the low-stock quick-list to avoid matching the same item name in the "Stocking Up" panel.
+    const lowStockSection = page.locator(".quick-list").filter({ has: page.locator(".badge-lowstock") });
+    await expect(lowStockSection.locator(".item-title", { hasText: "Tomatoes" })).toBeVisible();
+    await expect(lowStockSection.locator(".badge-lowstock", { hasText: "5 left" })).toBeVisible();
 
     console.log("CODEVALID_TEST_ASSERTION_OK:layout_low_stock_alert_displayed_when_quantity_le_5");
   } finally {

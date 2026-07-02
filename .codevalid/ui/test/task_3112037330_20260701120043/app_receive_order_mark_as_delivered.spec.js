@@ -33,7 +33,7 @@ test("Receive Order action updates inventory and order status", async ({ page },
 
   await recorder.step("Verify order moved to delivered history", async () => {
     // "Delivered" badge appears in the completed orders table after loadData() re-fetches
-    await expect(page.getByText("Delivered")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText("Delivered", { exact: true })).toBeVisible({ timeout: 5000 });
   });
 
   await recorder.step("Verify inventory quantity and last stock-in updated", async () => {
