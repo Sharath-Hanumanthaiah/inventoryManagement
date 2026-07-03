@@ -17,7 +17,7 @@ test("Add Stock creates new inventory item when no matching name exists", async 
   });
 
   await recorder.step("Create a new product stock entry", async () => {
-    await page.getByText("New Product").first().click();
+    // Inventory is empty so form starts in "New Product" mode directly — no segmented control click needed
     await expect(page.getByLabel("Item Name")).toBeVisible();
     await page.locator("#new-item-name").fill("Novel Product");
     await page.locator("#category-select").selectOption("Unknown");

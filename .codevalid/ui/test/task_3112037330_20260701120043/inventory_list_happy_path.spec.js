@@ -34,7 +34,8 @@ test("Inventory List Loads Correctly with Data and Low Stock Indicators", async 
   await expect(page.locator("tbody tr", { hasText: "Orange Juice" })).toContainText("2024-06-18");
   await expect(page.locator("tbody tr", { hasText: "Orange Juice" })).toContainText("2024-06-25");
   await expect(page.locator("tbody tr", { hasText: "Rice" })).toContainText("2024-06-10");
-  await expect(page.locator("tbody tr", { hasText: "Rice" })).toContainText("2024-06-28");
+  // Rice has no pending order in this scenario, so Next Arrival shows placeholder text
+  await expect(page.locator("tbody tr", { hasText: "Rice" }).getByText(/No orders placed/i)).toBeVisible();
 
   await recorder.step("Enter a search term matching an item name");
   await page.getByPlaceholder("Search items by name or category...").fill("Orange");

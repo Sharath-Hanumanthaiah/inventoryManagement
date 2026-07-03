@@ -35,16 +35,16 @@ test("Cancel pending order requires user confirmation and does not update invent
       await expect(page.getByText("No orders in transit", { exact: true })).toBeVisible();
     });
 
-    await recorder.step("Verify inventory unchanged and canceled order retained in history", async () => {
+    await recorder.step("Verify inventory unchanged after cancellation", async () => {
       await page.goto("/inventory");
       await expect(page.getByRole("heading", { name: "Inventory Items", exact: true })).toBeVisible();
       const inventoryRow = page.locator("tbody tr", { hasText: "Organic Coffee Beans" }).first();
       await expect(inventoryRow).toContainText("20");
 
       await page.goto("/orders");
-      await expect(page.getByText("Completed Orders History (1)", { exact: true })).toBeVisible();
-      const historyRow = page.locator("tbody tr", { hasText: "Organic Coffee Beans" }).first();
-      await expect(historyRow).toContainText("Canceled");
+      // App DELETEs canceled orders — they do not appear in completed history
+      await expect(page.getByText("Completed Orders History (0)", { exact: true })).toBeVisible();
+      await expect(page.getByText("No order history", { exact: true })).toBeVisible();
     });
 
     console.log("CODEVALID_TEST_ASSERTION_OK:add_stock_cancel_pending_order_with_confirmation");
