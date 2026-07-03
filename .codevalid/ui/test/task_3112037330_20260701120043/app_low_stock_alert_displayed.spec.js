@@ -13,7 +13,7 @@ test("Low stock alert appears when inventory quantity is ≤5", async ({ page },
   });
 
   await recorder.step("Launch inventory page", async () => {
-    await page.goto("/inventory");
+    await page.goto("/inventory", { waitUntil: "domcontentloaded" });
   });
 
   await recorder.step("Locate low stock row", async () => {

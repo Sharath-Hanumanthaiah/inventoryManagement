@@ -3,14 +3,14 @@ import { ExecutionRecorder } from "../../helpers/execution-recorder.js";
 import { setupInventoryAppMocks } from "../../helpers/mock-api.js";
 
 test("PlaceOrder Page Loads via Layout Navigation", async ({ page }, testInfo) => {
-  const recorder = new ExecutionRecorder("place_order_page_loads_via_layout", testInfo);
+  const recorder = new ExecutionRecorder("place_order_page_loads_via_layout", "PlaceOrder Page Loads via Layout Navigation");
 
   await recorder.step("Register mocked inventory, category, and order APIs for layout navigation", async () => {
     await setupInventoryAppMocks(page, { scenario: "default" });
   });
 
   await recorder.step("Navigate to the dashboard root route", async () => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
   });
 
   await recorder.step("Use the sidebar navigation to open Replenish Orders", async () => {

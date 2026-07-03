@@ -9,7 +9,7 @@ test("Total Stock Units and Filtered Counts Update Accurately", async ({ page },
   await setupInventoryAppMocks(page, { scenario: "default" });
 
   await recorder.step("Navigate to /inventory");
-  await page.goto("/inventory");
+  await page.goto("/inventory", { waitUntil: "domcontentloaded" });
 
   await recorder.step("Wait for data to load");
   await expect(page.getByRole("heading", { name: "Inventory Items" })).toBeVisible();

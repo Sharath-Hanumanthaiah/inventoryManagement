@@ -14,11 +14,11 @@ test("Access Add Stock via Layout Page", async ({ page }, testInfo) => {
           name: "Milk",
           category: "Dairy",
           quantity: 8,
-          physicalState: "Liquid",
+          state: "liquid",
           expiryDate: "2026-07-20",
-          lastStockInDate: "2026-06-20",
-          salesTrend: [],
-          seasonalSales: []
+          lastStockIn: "2026-06-20",
+          salesTrend: [3, 4, 5, 4, 3, 5],
+          seasonalSales: { summer: 12, monsoon: 10, winter: 8, spring: 11 }
         }
       ],
       categories: [
@@ -30,14 +30,14 @@ test("Access Add Stock via Layout Page", async ({ page }, testInfo) => {
           itemName: "Milk",
           category: "Dairy",
           quantity: 10,
-          expectedArrivalDate: "2026-07-05",
+          expectedArrival: "2026-07-05",
           status: "pending"
         }
       ]
     });
 
     await recorder.step("Navigate to route '/'");
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     await recorder.step("Confirm the layout loads and the sidebar Add Stock navigation link is visible");
     await expect(page.getByRole("link", { name: "Add Stock" })).toBeVisible();

@@ -9,7 +9,7 @@ test("Empty State Displays When No Inventory Items Exist", async ({ page }, test
   await setupInventoryAppMocks(page, { scenario: "empty_inventory" });
 
   await recorder.step("Navigate to /inventory");
-  await page.goto("/inventory");
+  await page.goto("/inventory", { waitUntil: "domcontentloaded" });
 
   await recorder.step("Wait for data load to complete");
   // Use exact:true — without it, getByRole name does substring matching and the query

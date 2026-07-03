@@ -13,7 +13,7 @@ test("Recent entries panel shows no more than five stock additions per session",
   });
 
   await recorder.step("Open Add Stock page", async () => {
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
     // No existing items → form is directly in new-product mode
     await expect(page.getByLabel("Item Name")).toBeVisible();
   });

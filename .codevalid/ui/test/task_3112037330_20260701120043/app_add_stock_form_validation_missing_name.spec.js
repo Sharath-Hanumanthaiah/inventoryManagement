@@ -13,7 +13,7 @@ test("Add Stock form rejects submission with empty item name", async ({ page }, 
   });
 
   await recorder.step("Open Add Stock page", async () => {
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
   });
 
   // When no existing items, the form starts directly in new-product mode —

@@ -13,7 +13,7 @@ test("Add Stock merges quantity with existing item using case-insensitive match"
   });
 
   await recorder.step("Open Add Stock page", async () => {
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
   });
 
   await recorder.step("Switch to New Product mode and submit lowercase name to merge with existing Widget A", async () => {
@@ -32,7 +32,7 @@ test("Add Stock merges quantity with existing item using case-insensitive match"
   });
 
   await recorder.step("Verify merge result in inventory", async () => {
-    await page.goto("/inventory");
+    await page.goto("/inventory", { waitUntil: "domcontentloaded" });
     await expect(page.getByRole("heading", { name: "Inventory Items" })).toBeVisible();
     const rows = page.locator("tbody tr", { has: page.getByText(/Widget A/i) });
     await expect(rows).toHaveCount(1);

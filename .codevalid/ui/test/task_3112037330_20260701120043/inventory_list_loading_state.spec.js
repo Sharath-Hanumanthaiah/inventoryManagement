@@ -9,7 +9,7 @@ test("Loading Skeleton Appears During Data Fetch", async ({ page }, testInfo) =>
   await setupInventoryAppMocks(page, { scenario: "default", delayMs: 1200 });
 
   await recorder.step("Navigate to /inventory and observe the immediate loading UI");
-  await page.goto("/inventory");
+  await page.goto("/inventory", { waitUntil: "domcontentloaded" });
   // Loading text renders above the table; with 1200ms delay it is visible right after navigation.
   await expect(page.getByText("Loading inventory data...")).toBeVisible();
   // Use exact:true to avoid substring matching h3 "No inventory items found" in addition to h1 "Inventory Items"

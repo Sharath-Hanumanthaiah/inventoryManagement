@@ -10,7 +10,7 @@ test("Direct Access to Categories Page", async ({ page }, testInfo) => {
     await setupInventoryAppMocks(page, { scenario: "default" });
 
     await recorder.step("Navigate directly to route '/categories'");
-    await page.goto("/categories");
+    await page.goto("/categories", { waitUntil: "domcontentloaded" });
 
     await recorder.step("Verify the Categories page renders without errors");
     await expect(page).toHaveURL(/\/categories$/);

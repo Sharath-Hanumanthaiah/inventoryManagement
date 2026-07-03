@@ -13,7 +13,7 @@ test("Add Stock workflow accessible via application sidebar", async ({ page }, t
   });
 
   await recorder.step("Launch app root", async () => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
   });
 
   await recorder.step("Navigate from sidebar to Add Stock", async () => {

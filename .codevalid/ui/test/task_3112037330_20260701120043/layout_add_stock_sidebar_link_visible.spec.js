@@ -61,7 +61,7 @@ test("Add Stock Navigation Link Present in Sidebar", async ({ page }, testInfo) 
 
   try {
     await recorder.recordStep("Navigate to the app shell so the sidebar layout renders");
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
 
     await recorder.recordStep("Locate the sidebar navigation region");
     const addStockLink = page.getByRole("link", { name: "Add Stock" });

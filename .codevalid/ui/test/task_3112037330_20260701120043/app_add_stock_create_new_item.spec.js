@@ -13,7 +13,7 @@ test("Add Stock creates new inventory item when no matching name exists", async 
   });
 
   await recorder.step("Open Add Stock page", async () => {
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
   });
 
   await recorder.step("Create a new product stock entry", async () => {
@@ -36,7 +36,7 @@ test("Add Stock creates new inventory item when no matching name exists", async 
   });
 
   await recorder.step("Verify item exists in inventory with computed defaults", async () => {
-    await page.goto("/inventory");
+    await page.goto("/inventory", { waitUntil: "domcontentloaded" });
     const row = page.locator("tr", { has: page.getByRole("cell", { name: "Novel Product" }) });
     await expect(row).toBeVisible();
     await expect(row.getByRole("cell", { name: "Unknown" })).toBeVisible();

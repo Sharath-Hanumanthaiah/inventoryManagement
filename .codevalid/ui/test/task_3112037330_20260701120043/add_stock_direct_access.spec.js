@@ -14,11 +14,11 @@ test("Direct Access to Add Stock via /add-stock URL", async ({ page }, testInfo)
           name: "Apples",
           category: "Fresh Produce",
           quantity: 12,
-          physicalState: "Solid",
+          state: "solid",
           expiryDate: "2026-07-25",
-          lastStockInDate: "2026-06-28",
-          salesTrend: [],
-          seasonalSales: []
+          lastStockIn: "2026-06-28",
+          salesTrend: [3, 4, 5, 4, 3, 5],
+          seasonalSales: { summer: 10, monsoon: 8, winter: 6, spring: 9 }
         }
       ],
       categories: [
@@ -28,7 +28,7 @@ test("Direct Access to Add Stock via /add-stock URL", async ({ page }, testInfo)
     });
 
     await recorder.step("Navigate directly to route '/add-stock'");
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
 
     await recorder.step("Confirm the AddStock component loads successfully");
     await expect(page).toHaveURL(/\/add-stock$/);

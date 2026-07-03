@@ -10,7 +10,7 @@ test("Access Categories Page from Layout (Landing)", async ({ page }, testInfo) 
     await setupInventoryAppMocks(page, { scenario: "default" });
 
     await recorder.step("Navigate to route '/'");
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.getByRole("heading", { name: "Dashboard Overview" })).toBeVisible();
 
     await recorder.step("Click the navigation link labeled 'Categories & Layout' in the application UI");

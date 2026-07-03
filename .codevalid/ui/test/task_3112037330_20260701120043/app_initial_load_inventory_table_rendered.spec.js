@@ -14,7 +14,7 @@ test("App loads with inventory table visible on launch", async ({ page }, testIn
   });
 
   await recorder.step("Launch inventory route", async () => {
-    await page.goto("/inventory");
+    await page.goto("/inventory", { waitUntil: "domcontentloaded" });
   });
 
   await recorder.step("Verify initial loading state", async () => {

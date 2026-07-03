@@ -18,7 +18,7 @@ test("Add Stock form rejects submission with non-positive quantity", async ({ pa
   });
 
   await recorder.step("Open Add Stock page", async () => {
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
   });
 
   // When no existing items the form is already in new-product mode —

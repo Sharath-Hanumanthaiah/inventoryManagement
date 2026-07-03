@@ -13,7 +13,7 @@ test("Adding stock to existing item auto-populates category, state, and expiry d
   });
 
   await recorder.step("Open Add Stock page", async () => {
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
     await expect(page.getByRole("heading", { name: "Add Stock" })).toBeVisible();
   });
 

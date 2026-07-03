@@ -75,7 +75,7 @@ test("Low Stock Alerts Are Visible When Inventory Quantity Is 5 or Less", async 
 
   try {
     await recorder.recordStep("Navigate to the dashboard where global stock alerts are summarized");
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     await expect(page.getByRole("heading", { name: "Dashboard Overview", exact: true })).toBeVisible();
 
     await recorder.recordStep("Verify the low stock KPI label is visible");

@@ -13,7 +13,7 @@ test("Inventory table shows empty state when no items exist", async ({ page }, t
   });
 
   await recorder.step("Open inventory page", async () => {
-    await page.goto("/inventory");
+    await page.goto("/inventory", { waitUntil: "domcontentloaded" });
   });
 
   await recorder.step("Wait for data load to complete", async () => {

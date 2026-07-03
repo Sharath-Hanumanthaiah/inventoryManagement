@@ -88,7 +88,7 @@ test("Recent Entries Panel Shows Up to Five Stock Additions from Session", async
 
   try {
     await recorder.recordStep("Open the Add Stock workflow");
-    await page.goto("/add-stock");
+    await page.goto("/add-stock", { waitUntil: "domcontentloaded" });
     await expect(page.getByRole("heading", { name: "Add Stock", exact: true })).toBeVisible();
 
     // The form starts in "existing" mode since Milk exists.
