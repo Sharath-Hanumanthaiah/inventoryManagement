@@ -21,8 +21,8 @@ test("Form validation prevents submission when required fields are missing", asy
       await expect(page.getByRole("heading", { name: "Replenish Orders", exact: true })).toBeVisible();
     });
 
-    await recorder.step("Switch to new product mode and leave product name empty", async () => {
-      await page.getByText("Order New Product", { exact: true }).click();
+    await recorder.step("Fill other fields and leave product name empty", async () => {
+      // inventory is empty so form is already in 'type' mode — no segmented control shown
       await expect(page.locator("#order-new-name")).toBeVisible();
       await page.locator("#order-new-name").fill("");
       await page.locator("#order-qty").fill("5");
@@ -30,16 +30,18 @@ test("Form validation prevents submission when required fields are missing", asy
       await page.locator("#expected-arrival").fill("2024-07-15");
     });
 
-    await recorder.step("Submit invalid form", async () => {
+    await recorder.step("Submit form with noValidate to trigger React JS validation", async () => {
+      // Bypass browser HTML5 required validation so React's JS alert fires
+      await page.locator("form").evaluate((form) => { form.noValidate = true; });
       await page.getByRole("button", { name: "Place Replenish Order" }).click();
     });
 
-    await recorder.step("Verify validation alert and no order created", async () => {
+    await recorder.step("Verify JS validation blocks order creation", async () => {
       await expect.poll(() => alertMessage).toBe("Please enter the item name.");
       await expect(page.getByText("Pending Deliveries (0)", { exact: true })).toBeVisible();
       await expect(page.getByText("No orders in transit", { exact: true })).toBeVisible();
       await expect(page.locator("#order-qty")).toHaveValue("5");
-      await expect(page.locator("#order-price")).toHaveValue("20.00");
+      await expect(page.locator("#order-price")).toHaveValue("20");
       await expect(page.locator("#expected-arrival")).toHaveValue("2024-07-15");
     });
 

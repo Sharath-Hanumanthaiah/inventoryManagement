@@ -21,7 +21,7 @@ test("Form Rejects Negative or Zero Cost Value", async ({ page }, testInfo) => {
 
     await recorder.step("Open orders page and switch to new product mode", async () => {
       await page.goto("/orders");
-      await page.getByText("Order New Product", { exact: true }).click();
+      // inventory is empty so form is already in 'type' mode — no segmented control shown
       await expect(page.locator("#order-new-name")).toBeVisible();
     });
 
@@ -30,6 +30,8 @@ test("Form Rejects Negative or Zero Cost Value", async ({ page }, testInfo) => {
       await page.locator("#order-qty").fill("3");
       await page.locator("#order-price").fill("-5.00");
       await page.locator("#expected-arrival").fill("2024-08-10");
+      // Disable browser HTML5 constraint validation so the React JS alert fires
+      await page.locator("form").evaluate((form) => { form.noValidate = true; });
       await page.getByRole("button", { name: "Place Replenish Order", exact: true }).click();
     });
 

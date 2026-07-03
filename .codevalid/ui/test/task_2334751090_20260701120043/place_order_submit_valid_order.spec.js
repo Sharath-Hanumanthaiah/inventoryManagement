@@ -20,7 +20,7 @@ test("Successfully Submit Valid Replenishment Order", async ({ page }, testInfo)
     await recorder.step("Open orders page and switch to new product mode", async () => {
       await page.goto("/orders");
       await expect(page.getByRole("heading", { name: "Replenish Orders", exact: true })).toBeVisible();
-      await page.getByText("Order New Product", { exact: true }).click();
+      // inventory is empty so form is already in 'type' mode — no segmented control shown
       await expect(page.locator("#order-new-name")).toBeVisible();
     });
 
@@ -36,6 +36,9 @@ test("Successfully Submit Valid Replenishment Order", async ({ page }, testInfo)
     await recorder.step("Submit the order and verify pending delivery plus form reset", async () => {
       await page.getByRole("button", { name: "Place Replenish Order", exact: true }).click();
 
+      // Wait for loadData() to complete and the pending count to update
+      await expect(page.getByRole("heading", { name: /Pending Deliveries \(1\)/ })).toBeVisible();
+
       const pendingCard = page.locator(".quick-list-item", {
         has: page.getByText("Organic Quinoa", { exact: true }),
       }).first();
@@ -45,7 +48,6 @@ test("Successfully Submit Valid Replenishment Order", async ({ page }, testInfo)
       await expect(pendingCard.getByText("10", { exact: true })).toBeVisible();
       await expect(pendingCard.getByText("$25.99", { exact: true })).toBeVisible();
       await expect(pendingCard.getByText("2024-08-20", { exact: true })).toBeVisible();
-      await expect(page.getByRole("heading", { name: /Pending Deliveries \(1\)/ })).toBeVisible();
 
       await expect(page.locator("#order-new-name")).toHaveValue("");
       await expect(page.locator("#order-qty")).toHaveValue("50");

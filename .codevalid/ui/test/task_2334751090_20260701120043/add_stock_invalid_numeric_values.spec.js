@@ -22,7 +22,8 @@ test("Form rejects non-positive or non-numeric quantity and cost", async ({ page
     });
 
     await recorder.step("Enter invalid numeric values", async () => {
-      await page.getByText("Order New Product", { exact: true }).click();
+      // inventory is empty so form is already in 'type' mode — no segmented control shown
+      await expect(page.locator("#order-new-name")).toBeVisible();
       await page.locator("#order-new-name").fill("Tea Leaves");
       await page.locator("#order-qty").fill("0");
       await page.locator("#order-price").fill("-5.00");
@@ -30,6 +31,8 @@ test("Form rejects non-positive or non-numeric quantity and cost", async ({ page
     });
 
     await recorder.step("Submit invalid values", async () => {
+      // Disable browser HTML5 constraint validation so the React JS alert fires
+      await page.locator("form").evaluate((form) => { form.noValidate = true; });
       await page.getByRole("button", { name: "Place Replenish Order" }).click();
     });
 
