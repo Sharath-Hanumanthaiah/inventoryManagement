@@ -22,10 +22,10 @@ test("Dashboard renders correctly with empty inventory and order data", async ({
 
   await recorder.step("Verify KPI metrics display zero values");
   await expect(page.getByText("Total Unique Items")).toBeVisible();
-  await expect(page.getByText("Out of Stock")).toBeVisible();
+  await expect(page.locator(".kpi-card").filter({ hasText: "Out of Stock" })).toBeVisible();
   await expect(page.getByText("Low Stock (1-5)")).toBeVisible();
   await expect(page.getByText("Pending Orders")).toBeVisible();
-  await expect(page.getByText("0", { exact: true })).toBeVisible();
+  await expect(page.locator(".kpi-value").filter({ hasText: /^0$/ }).first()).toBeVisible();
 
   await recorder.step("Verify the Stock Alert Center displays no alert items");
   await expect(page.getByRole("heading", { name: "Stock Alert Center" })).toBeVisible();

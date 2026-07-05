@@ -39,7 +39,7 @@ test("Dashboard displays correct inventory condition metrics", async ({ page }, 
     const outOfStock = 1;
     const lowStock = 2;
     expect(total - outOfStock - lowStock).toBe(1);
-    await expect(page.getByText("Premium Rice")).toBeVisible();
+    await expect(page.locator(".recharts-legend-item-text").filter({ hasText: "Premium Rice" })).toBeVisible();
   });
 
   console.log("CODEVALID_TEST_ASSERTION_OK:dashboard_displays_correct_inventory_condition_metrics");

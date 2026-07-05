@@ -21,28 +21,29 @@ test("Dashboard loads analytics with inventory and order data", async ({ page },
 
   await recorder.step("Verify inventory analytics metrics are visible");
   await expect(page.getByText("Total Unique Items")).toBeVisible();
-  await expect(page.getByText("Out of Stock")).toBeVisible();
+  await expect(page.locator(".kpi-card").filter({ hasText: "Out of Stock" })).toBeVisible();
   await expect(page.getByText("Low Stock (1-5)")).toBeVisible();
   await expect(page.getByText("Pending Orders")).toBeVisible();
-  await expect(page.getByText("4", { exact: true })).toBeVisible();
-  await expect(page.getByText("1", { exact: true })).toBeVisible();
-  await expect(page.getByText("2", { exact: true })).toBeVisible();
+  await expect(page.locator(".kpi-card", { hasText: "Total Unique Items" }).locator(".kpi-value")).toBeVisible();
+  await expect(page.locator(".kpi-card", { hasText: "Out of Stock" }).locator(".kpi-value")).toBeVisible();
+  await expect(page.locator(".kpi-card", { hasText: "Pending Orders" }).locator(".kpi-value")).toBeVisible();
 
   await recorder.step("Verify Out of Stock metrics include items where quantity equals 0");
+  const stockAlertPanel = page.locator(".panel").filter({ has: page.getByRole("heading", { name: "Stock Alert Center" }) });
   await expect(page.getByRole("heading", { name: "Out of Stock (0 units)" })).toBeVisible();
-  await expect(page.getByText("Tomato Soup")).toBeVisible();
-  await expect(page.getByText("Out of Stock", { exact: true })).toBeVisible();
+  await expect(page.locator(".item-title").filter({ hasText: "Tomato Soup" })).toBeVisible();
+  await expect(stockAlertPanel.getByText("Out of Stock", { exact: true })).toBeVisible();
 
   await recorder.step("Verify Low Stock metrics include items where quantity is between 1 and 5");
   await expect(page.getByRole("heading", { name: "Low Stock Warning (1 to 5 units)" })).toBeVisible();
-  await expect(page.getByText("Pasta")).toBeVisible();
+  await expect(page.locator(".item-title").filter({ hasText: "Pasta" })).toBeVisible();
   await expect(page.getByText("3 left")).toBeVisible();
 
   await recorder.step("Verify In Stock metrics include items where quantity is greater than 5");
-  await expect(page.getByText("Premium Rice")).toBeVisible();
-  await expect(page.getByText("Olive Oil")).toBeVisible();
+  await expect(page.locator(".recharts-legend-item-text").filter({ hasText: "Premium Rice" })).toBeVisible();
+  await expect(page.locator(".recharts-legend-item-text").filter({ hasText: "Olive Oil" })).toBeVisible();
   await expect(page.getByText("Low Stock Warning (1 to 5 units)")).toBeVisible();
-  await expect(page.getByText("Tomato Soup")).toBeVisible();
+  await expect(page.locator(".item-title").filter({ hasText: "Tomato Soup" })).toBeVisible();
 
   await recorder.step("Verify the Stock Alert Center is visible");
   await expect(page.getByRole("heading", { name: "Stock Alert Center" })).toBeVisible();

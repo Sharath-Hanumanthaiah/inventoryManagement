@@ -24,11 +24,11 @@ test("Dashboard correctly classifies stock status boundary values", async ({ pag
   await expect(stockAlertPanel.getByText("5 left")).toBeVisible();
 
   await recorder.step("Verify the item with quantity above 5 appears in the in-stock population and not in alert sections");
-  await expect(page.getByText("Premium Rice").first()).toBeVisible();
+  await expect(page.locator(".recharts-legend-item-text").filter({ hasText: "Premium Rice" })).toBeVisible();
   await expect(stockAlertPanel.getByText("Premium Rice")).toHaveCount(0);
 
   await recorder.step("Verify category counts reflect the documented business rules without overlap");
-  await expect(page.getByText("Out of Stock")).toBeVisible();
+  await expect(page.locator(".kpi-card").filter({ hasText: "Out of Stock" })).toBeVisible();
   await expect(page.getByText("Low Stock (1-5)")).toBeVisible();
   await expect(page.getByText("1", { exact: true })).toBeVisible();
   await expect(page.getByText("2", { exact: true })).toBeVisible();
